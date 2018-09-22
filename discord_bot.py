@@ -7,8 +7,9 @@ Created on Fri Sep 21 16:32:15 2018
 
 import discord as discord
 import discord.ext.commands as disc
-import random
-import time
+import os
+
+api = str(os.environ.get('RIOT_KEY'))
 
 BOT_PREFIX = ("!", "?")
 TOKEN = 'NDkyNzAyMDY5NzE1ODk0Mjkz.Doaycw.2DL8tKNQl9bDl0o3JXlEhyXbpcQ'
@@ -219,7 +220,7 @@ async def mp(context):
     await client.whisper("J'ai bien reçu ton message")               
      
         
-client.run(TOKEN)
+client.run(str(os.environ.get('BOT_TOKEN')))
 
 
 
