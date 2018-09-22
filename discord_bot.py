@@ -7,9 +7,11 @@ Created on Fri Sep 21 16:32:15 2018
 
 import discord as discord
 import discord.ext.commands as disc
-import os
+import random
+import time
 
 BOT_PREFIX = ("!", "?")
+TOKEN = 'NDkyNzAyMDY5NzE1ODk0Mjkz.Doaycw.2DL8tKNQl9bDl0o3JXlEhyXbpcQ'
 
 client = disc.Bot(BOT_PREFIX)
 game_started = False
@@ -126,6 +128,7 @@ async def pret(context):
         await client.say("La partie va commencer. Je commence à distribuer les rôles.")
         temp = roles[len(players)].copy()
         temp = random.shuffle(temp)
+        print(temp)
         game_data = [(temp[i], players[i]) for i in range (len(players))]
         players = random.shuffle(players)
         for i in game_data:
@@ -217,7 +220,7 @@ async def mp(context):
     await client.whisper("J'ai bien reçu ton message")               
      
         
-client.run('NDkyNzAyMDY5NzE1ODk0Mjkz.Doaycw.2DL8tKNQl9bDl0o3JXlEhyXbpcQ')
+client.run(TOKEN)
 
 
 
