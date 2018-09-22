@@ -9,8 +9,6 @@ import discord as discord
 import discord.ext.commands as disc
 import os
 
-api = str(os.environ.get('RIOT_KEY'))
-
 BOT_PREFIX = ("!", "?")
 
 client = disc.Bot(BOT_PREFIX)
