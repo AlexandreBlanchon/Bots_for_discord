@@ -12,7 +12,6 @@ import os
 api = str(os.environ.get('RIOT_KEY'))
 
 BOT_PREFIX = ("!", "?")
-TOKEN = 'NDkyNzAyMDY5NzE1ODk0Mjkz.Doaycw.2DL8tKNQl9bDl0o3JXlEhyXbpcQ'
 
 client = disc.Bot(BOT_PREFIX)
 game_started = False
