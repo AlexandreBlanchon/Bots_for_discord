@@ -50,15 +50,7 @@ tours[10] = [3,4,4,5,5]
 @client.command(brief = "I'm polite !", description = "I reply whenever you greet me !", aliases = ['Hello', 'Hi', 'hi'])
 async def hello():
     await client.say("Hello !")
-
-@client.event
-async def on_ready():
-    print('Logged in as')
-    print(client.user.name)
-    print(client.user.id)
-    print('------')
-    
-    
+        
 @client.event
 async def on_server_join():    
     await client.say("Hello everyone ! I'm AvalonBot and it's so nice to meet you !")
