@@ -13,12 +13,6 @@ import os
 TOKEN = os.environ['TOKEN']
 PREFIX = os.environ['PREFIX']
 client = disc.Bot(command_prefix = PREFIX)
-
-@client.event
-async def on_ready():
-    print("Logged in as")
-    print(client.user.name)
-    print(client.user.id)
     
 @client.command()
 async def hello():
