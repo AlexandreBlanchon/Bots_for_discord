@@ -17,11 +17,8 @@ chardet==3.0.4
 chest==0.2.3
 click==6.6
 cloudpickle==0.2.1
-clyent==1.2.2
 colorama==0.3.7
 comtypes==1.1.2
-conda==4.2.9
-conda-build==2.0.2
 configobj==5.0.6
 contextlib2==0.5.3
 cryptography==1.5
@@ -34,7 +31,6 @@ decorator==4.0.10
 dill==0.2.5
 discord.py==0.16.12
 docutils==0.12
-dynd===c328ab7
 et-xmlfile==1.0.1
 fastcache==1.0.2
 filelock==2.0.6
@@ -70,9 +66,6 @@ mistune==0.7.3
 mpmath==0.19
 multidict==4.4.2
 multipledispatch==0.4.8
-nb-anacondacloud==1.2.0
-nb-conda==2.0.0
-nb-conda-kernels==2.0.0
 nbconvert==4.2.0
 nbformat==4.1.0
 nbpresent==3.0.2
@@ -119,7 +112,6 @@ qtconsole==4.2.1
 QtPy==1.1.2
 requests==2.11.1
 rope-py3k==0.9.4.post1
-scikit-image==0.12.3
 scikit-learn==0.17.1
 scipy==0.18.1
 simplegeneric==0.8.1
