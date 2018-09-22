@@ -1,1 +1,3 @@
-discord.py
+decorator==4.0.10
+discord.py==0.16.12
+
