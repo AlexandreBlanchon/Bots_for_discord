@@ -6,6 +6,7 @@ Created on Fri Sep 21 16:32:15 2018
 """
 
 import discord.ext.commands as disc
+import random
 
 BOT_PREFIX = ("!", "?")
 TOKEN = 'NDkyNzAyMDY5NzE1ODk0Mjkz.Doaycw.2DL8tKNQl9bDl0o3JXlEhyXbpcQ'
