@@ -1,1 +1,1 @@
-worker: python3 testdiscord.py
+worker: python3 testsdiscord.py
