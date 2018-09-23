@@ -11,20 +11,11 @@ import os
 
 TOKEN = os.environ['TOKEN']
 BOT_PREFIX = os.environ['PREFIX']
-
 client = disc.Bot(BOT_PREFIX)
-game_started = False
-fail = False
-failures = 0
-successes = 0
-quest = 1
-questers = []
-vote = 1
-leader = 0
-players = []
-voters = []
-traduction = ['', 'Merlin', 'Perceval', 'Chevalier', 'Assassin', 'Oberon', 'Morgane', 'un sbire de Mordred']
 
+data = dict(dict([]))
+
+traduction = ['', 'Merlin', 'Perceval', 'Chevalier', 'Assassin', 'Oberon', 'Morgane', 'un sbire de Mordred']
 roles = [[]]*11
 tours = [[]]*11 
 # 1 : Merlin
