@@ -35,6 +35,7 @@ tours = [[]]*11
 # 5 : Oberon
 # 6 : Morgane
 # 7 : Sbire
+roles[3] = [1,2,4]
 roles[5] = [1,2,3,4,7]
 roles[6] = [1,2,3,3,4,6]
 roles[7] = [1,2,3,3,4,5,7]
@@ -42,6 +43,7 @@ roles[8] = [1,2,3,3,3,4,5,6]
 roles[9] = [1,2,3,3,3,3,4,6,7]
 roles[10] = [1,2,3,3,3,3,4,5,6,7]
 
+tours[3] = [1,2,3,2,3]
 tours[5] = [2,3,2,3,3]
 tours[6] = [2,3,4,3,4]
 tours[7] = [2,3,3,4,4]
@@ -53,6 +55,13 @@ tours[10] = [3,4,4,5,5]
 async def hello():
     await client.say("Hello !")
         
+@client.command(brief = "Termine la partie", description = "Permet de quitter une partie à tout moment. A utiliser quand une partie se termine.", aliases = ['end'])
+async def end_game():
+    global game_started
+    await client.say("La partie a bien été réinitialisée. Entrez la commande start pour commencer le choix des joueurs !")
+    game_started = False
+
+
 @client.event
 async def on_server_join():    
     await client.say("Hello everyone ! I'm AvalonBot and it's so nice to meet you !")
@@ -64,6 +73,7 @@ async def start_game():
         await client.say("Une partie est déjà en cours. Entrez la commande join pour la rejoindre.")
     else:
         game_started = True
+        players = []
         await client.say("Une partie d'Avalon a été lancée ! Entrez la commande join pour participer !")
     
 @client.command(pass_context = True, brief = "Rejoignez une partie")
