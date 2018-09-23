@@ -99,7 +99,7 @@ async def start_game(context):
 async def join(context):
     global data
     server = context.message.server.id
-    if game_started:
+    if data[server]['game_started']:
         if context.message.author not in data[server]['players']:
             if len(data[server]['players']) < len(roles)-1:
                 data[server]['players'] += [context.message.author]
