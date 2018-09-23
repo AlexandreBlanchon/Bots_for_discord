@@ -163,7 +163,7 @@ async def pret(context):
             await client.say("Procédons à la quête numéro "+str(quest)+", vote numéro "+str(vote))
             if vote == 5:
                 await client.say("Attention ! Cette équipe de quête sera automatiquement acceptée.")
-            await client.say("C'est à "+players[leader].mention+" de choisir l'équipe. Elle devra être constituée de "+tours[len(players)][quest-1]+" joueurs.")
+            await client.say("C'est à "+players[leader].mention+" de choisir l'équipe. Elle devra être constituée de "+str(tours[len(players)][quest-1])+" joueurs.")
             questers = []
             while len(questers)<tours[len(players)][quest-1]:
                 msg = await client.wait_for_message(author = players[leader], check = check)
@@ -199,16 +199,16 @@ async def pret(context):
                 if fail:
                     await client.say("La quête est un échec.")
                     failures +=1
-                    leader +=1
+                    leader = (leader + 1)%len(players)
                     quest +=1
                 else:
                     await client.say("La quête est un succès.")
                     successes +=1
-                    leader +=1
+                    leader = (leader + 1)%len(players)
                     quest +=1
             else:
                 await client.say("L'équipe est refusée")
-                leader +=1
+                leader = (leader + 1)%len(players)
         if failures==3:
             await client.say("Les agents du Mal, c'est à dire ")
             for j in game_data:
