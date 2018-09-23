@@ -63,7 +63,17 @@ async def hello():
         
 @client.command(brief = "Termine la partie", description = "Permet de quitter une partie à tout moment. A utiliser quand une partie se termine.", aliases = ['end'])
 async def end_game():
-    global game_started
+    global game_started, fail, failures, successes, quest, questers, vote, leader, players, voters
+    game_started = False
+    fail = False
+    failures = 0
+    successes = 0
+    quest = 1
+    questers = []
+    vote = 1
+    leader = 0
+    players = []
+    voters = []
     await client.say("La partie a bien été réinitialisée. Entrez la commande start pour commencer le choix des joueurs !")
     game_started = False
 
