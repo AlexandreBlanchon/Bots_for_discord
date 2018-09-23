@@ -10,8 +10,11 @@ import random
 import os
 
 
-TOKEN = os.environ['TOKEN']
-BOT_PREFIX = os.environ['PREFIX']
+TOKEN = 'NDkyNzAyMDY5NzE1ODk0Mjkz.DoaRrg.mMy05fcF4-c4dIjU4eiLQxIotOE'
+BOT_PREFIX = '!'
+
+#TOKEN = os.environ['TOKEN']
+#BOT_PREFIX = os.environ['PREFIX']
 
 client = disc.Bot(BOT_PREFIX)
 game_started = False
@@ -51,6 +54,13 @@ tours[8] = [3,4,4,5,5]
 tours[9] = [3,4,4,5,5]
 tours[10] = [3,4,4,5,5]
 
+@client.event
+async def on_ready():
+    print("Successfully logged in as")
+    print(client.user.name)
+    print(client.user.id)
+    print("-------------------------")
+
 @client.command(brief = "I'm polite !", description = "I reply whenever you greet me !", aliases = ['Hello', 'Hi', 'hi'])
 async def hello():
     await client.say("Hello !")
@@ -68,20 +78,21 @@ async def on_server_join():
     
 @client.command(aliases = ['startgame', 'start-game', 'start'], brief = "C'est là que tout commence !")
 async def start_game():
-    global game_started
+    global game_started, players
     if game_started:
         await client.say("Une partie est déjà en cours. Entrez la commande join pour la rejoindre.")
     else:
         game_started = True
         players = []
         await client.say("Une partie d'Avalon a été lancée ! Entrez la commande join pour participer !")
+        await client.say("POUR L'INSTANT, la plupart des commandes peuvent être entrées en message privé. Je ferai une MàJ quand j'aurai le temps pour pouvoir porter AvalonBot sur d'autres serveurs, et certaines fonctionnalités seront supprimées.")
     
 @client.command(pass_context = True, brief = "Rejoignez une partie")
 async def join(context):
     global game_started, players
     if game_started:
         if context.message.author not in players:
-            if len(players) < len(roles):
+            if len(players) < len(roles)-1:
                 players += [context.message.author]
                 await client.reply("c'est noté. Tu as rejoint la partie !")
             else:
@@ -112,6 +123,7 @@ async def test(context):
 @client.command(pass_context = True, brief = "Un test de fonctionnalités (mention du server)")
 async def server_mention(context):
     await client.reply("Nous sommes sur le serveur "+context.message.server.name)
+    await client.reply("Nous sommes sur le serveur "+str(context.message.server.id))
 
 @client.command(pass_context = True, brief = "Une fois que tous les joueurs sont là")
 async def pret(context):
@@ -119,9 +131,9 @@ async def pret(context):
     def check(msg):
         return True if msg.content[2:-1] in [i.id for i in players] else False
     def check2(msg):
-        return True if msg.author in [i.id for i in voters] and (msg.content == 'Pour' or msg.content == 'Contre') else False
+        return True if msg.author.id in [i.id for i in voters] and (msg.content == 'Pour' or msg.content == 'Contre') else False
     def check3(msg):
-        return True if msg.author in [i.id for i in voters] and (msg.content == 'Succès' or msg.content == 'Echec') else False
+        return True if msg.author.id in [i.id for i in voters] and (msg.content == 'Succès' or msg.content == 'Echec') else False
     if not game_started:
         await client.say("Il n'y a pas de partie en cours. Lancez-en une avec la commande start !")
     elif len(players) < 3:
@@ -133,43 +145,47 @@ async def pret(context):
         game_data = [(temp[i], players[i]) for i in range (len(players))]
         random.shuffle(players)
         for i in game_data:
-            print(i)
-            await client.whisper(destination = i[1], content = "Pour la partie d'Avalon en cours sur le serveur "+context.message.server.name+", tu es "+traduction[i[0]])
+            await client.send_message(destination = i[1], content = "Pour la partie d'Avalon en cours sur le serveur "+context.message.server.name+", tu es "+traduction[i[0]])
             if i[0]<4:
-                await client.whisper(destination = i[1], content = "Tu es un loyal serviteur d'Arthur. Il t'incombe de démasquer les serviteurs du mal et de les empêcher de nuire à Merlin !")
+                await client.send_message(destination = i[1], content = "Tu es un loyal serviteur d'Arthur. Il t'incombe de démasquer les serviteurs du mal et de les empêcher de nuire à Merlin !")
             else:
-                await client.whisper(destination = i[1], content = "Tu sers le mal. Avec tes alliés, tu dois faire échouer les loyaux serviteurs d'Arthur dans leur quête, ou au moins découvrir l'identité de Merlin !")
+                await client.send_message(destination = i[1], content = "Tu sers le mal. Avec tes alliés, tu dois faire échouer les loyaux serviteurs d'Arthur dans leur quête, ou au moins découvrir l'identité de Merlin !")
             if i[0]==1:
                 for j in game_data:
                     if j[0]>3:
-                        await client.whisper(destination = i[1], content = "Tes pouvoirs magiques te révèlent que "+j[0].mention+" sert le mal.")
+                        await client.send_message(destination = i[1], content = "Tes pouvoirs magiques te révèlent que "+j[1].name+" sert le mal.")
             if i[0]==2:
                 for j in game_data:
                     if j[0]==1:
-                        await client.whisper(destination = i[1], content = "Tu connais l'identité secrète de Merlin ! C'est "+j[1].mention)
+                        await client.send_message(destination = i[1], content = "Tu connais l'identité secrète de Merlin ! C'est "+j[1].name)
             if i[0]>3:
                 for j in game_data:
                     if j[0]>3 and j[1] != i[1]:
-                        await client.whisper(destination = i[1], content = j[0].mention+" est un de tes alliés.")
+                        await client.send_message(destination = i[1], content = j[1].name+" est un de tes alliés.")
         await client.say("Les rôles ont été distribués. Nous pouvons maintenant passer à la phase de quêtes !")
         while failures<3 and successes<3:
             await client.say("Procédons à la quête numéro "+str(quest)+", vote numéro "+str(vote))
             if vote == 5:
                 await client.say("Attention ! Cette équipe de quête sera automatiquement acceptée.")
-                await client.say("C'est à "+players[leader].mention+"de choisir l'équipe.")
-            while len(questers)<tours[len(players)][quest]:
+            await client.say("C'est à "+players[leader].mention+" de choisir l'équipe. Elle devra être constituée de "+tours[len(players)][quest-1]+" joueurs.")
+            questers = []
+            while len(questers)<tours[len(players)][quest-1]:
                 msg = await client.wait_for_message(author = players[leader], check = check)
                 user_id = msg.content
-                await client.reply(msg = msg, content = user_id+" a été ajouté à l'équipe de quête.")
-                questers += [await client.get_user_info(user_id[2:-1])]
+                await client.say(content = user_id+" a été ajouté à l'équipe de quête.")
+                user = await client.get_user_info(user_id[2:-1])
+                if user not in questers:
+                    questers += [await client.get_user_info(user_id[2:-1])]
+                else:
+                    await client.say("Cette personne a déjà été ajoutée à l'équipe de quête.")
             await client.say("L'équipe de quête a été constituée. Les personnes suivantes en font partie :")
             for i in questers:
                 await client.say(i.mention)
-            await client.say("Votez Pour ou Contre l'équipe de quête ! (En message privé si possible)")
+            await client.say("Votez Pour ou Contre l'équipe de quête !")
             voters = players.copy()
             votes_pour = 0
             while voters != [] and votes_pour <= len(players)//2:
-                msg = await client.wait_for_message(author = players[leader], check = check2)
+                msg = await client.wait_for_message(check = check2)
                 voters.remove(msg.author)
                 await client.say(msg.author.mention+" a voté "+msg.content)
                 if msg.content == "Pour":
@@ -177,8 +193,9 @@ async def pret(context):
             if votes_pour > len(players)//2:
                 await client.say("L'équipe est acceptée ! Il faut maintenant que les membres de l'équipe m'envoient leur vote (Succès ou Echec) par message privé.")
                 voters = questers.copy()
+                fail = False
                 while voters != []:
-                    msg = await client.wait_for_message(author = players[leader], check = check3)
+                    msg = await client.wait_for_message(check = check3)
                     voters.remove(msg.author)
                     await client.say(msg.author.mention + " a voté.")
                     if msg.content == "Echec":
@@ -206,7 +223,7 @@ async def pret(context):
             await client.say("Les loyaux serviteurs d'Arthur ont accompli leurs trois quêtes. L'assassin, c'est à dire : ")
             for j in game_data:
                     if j[0]==4:
-                        await client.say(j[0].mention)
+                        await client.say(j[1].mention)
             await client.say("peut maintenant désigner sa victime")
             msg = await client.wait_for_message(author = players[leader], check = check)
             user_id = msg.content
