@@ -124,7 +124,7 @@ async def pret(context):
         return True if msg.author in [i.id for i in voters] and (msg.content == 'Succès' or msg.content == 'Echec') else False
     if not game_started:
         await client.say("Il n'y a pas de partie en cours. Lancez-en une avec la commande start !")
-    elif len(players) < 5:
+    elif len(players) < 3:
         await client.say("Pas assez de joueurs !")
     else:
         await client.say("La partie va commencer. Je commence à distribuer les rôles.")
