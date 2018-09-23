@@ -9,8 +9,12 @@ import discord.ext.commands as disc
 import random
 import os
 
-TOKEN = os.environ['TOKEN']
-BOT_PREFIX = os.environ['PREFIX']
+
+TOKEN = 'NDkyNzAyMDY5NzE1ODk0Mjkz.DoaRrg.mMy05fcF4-c4dIjU4eiLQxIotOE'
+BOT_PREFIX = '!'
+
+#TOKEN = os.environ['TOKEN']
+#BOT_PREFIX = os.environ['PREFIX']
 
 client = disc.Bot(BOT_PREFIX)
 game_started = False
@@ -219,13 +223,14 @@ async def pret(context):
             await client.say("Les loyaux serviteurs d'Arthur ont accompli leurs trois quêtes. L'assassin, c'est à dire : ")
             for j in game_data:
                     if j[0]==4:
+                        assassin = j[1]
                         await client.say(j[1].mention)
             await client.say("peut maintenant désigner sa victime")
-            msg = await client.wait_for_message(author = players[leader], check = check)
+            msg = await client.wait_for_message(author = assassin, check = check)
             user_id = msg.content
             user = await client.get_user_info(user_id[2:-1])
-            if (user, 1) in game_data:
-                await client.say ("L'assassin a tué Merlin. C'est finalement le Mal qui ont vaincu !")
+            if (1, user) in game_data:
+                await client.say ("L'assassin a tué Merlin. C'est finalement le Mal qui a vaincu !")
             else:
                 await client.say("L'assassin n'a pas réussi à tuer Merlin. Le Bien triomphe !")
      
