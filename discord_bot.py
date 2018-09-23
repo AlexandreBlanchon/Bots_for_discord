@@ -130,10 +130,10 @@ async def pret(context):
         await client.say("La partie va commencer. Je commence à distribuer les rôles.")
         temp = roles[len(players)].copy()
         random.shuffle(temp)
-        print(temp)
         game_data = [(temp[i], players[i]) for i in range (len(players))]
         random.shuffle(players)
         for i in game_data:
+            print(i)
             await client.whisper(destination = i[1], content = "Pour la partie d'Avalon en cours sur le serveur "+context.message.server.name+", tu es "+traduction[i[0]])
             if i[0]<4:
                 await client.whisper(destination = i[1], content = "Tu es un loyal serviteur d'Arthur. Il t'incombe de démasquer les serviteurs du mal et de les empêcher de nuire à Merlin !")
