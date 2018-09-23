@@ -77,7 +77,7 @@ async def on_server_join():
 async def start_game(context):
     global data
     server = context.message.server.id
-    if data.has_key(server) and data[server][game_started]:
+    if server in data and data[server][game_started]:
         await client.say("Une partie est déjà en cours. Entrez la commande join pour la rejoindre.")
     else:
         data[server] = dict([])
