@@ -54,7 +54,7 @@ async def hello():
         
 @client.command(pass_context = True, brief = "Termine la partie", description = "Permet de quitter une partie à tout moment. A utiliser quand une partie se termine.", aliases = ['end'])
 async def end_game(context):
-    global game_started, fail, failures, successes, quest, questers, vote, leader, players, voters
+    global data
     server = context.message.server.id
     data[server][game_started] = False
     data[server][fail] = False
@@ -67,7 +67,6 @@ async def end_game(context):
     data[server][players] = []
     data[server][voters] = []
     await client.say("La partie a bien été réinitialisée. Entrez la commande start pour commencer le choix des joueurs !")
-    game_started = False
 
 
 @client.event
@@ -78,7 +77,7 @@ async def on_server_join():
 async def start_game(context):
     global data
     server = context.message.server.id
-    if game_started:
+    if (data[server][game_started] in globals() or data[server][game_started] in locals()) and data[server][game_started]:
         await client.say("Une partie est déjà en cours. Entrez la commande join pour la rejoindre.")
     else:
         data[server][game_started] = True
