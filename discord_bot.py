@@ -9,12 +9,8 @@ import discord.ext.commands as disc
 import random
 import os
 
-
-TOKEN = 'NDkyNzAyMDY5NzE1ODk0Mjkz.DoaRrg.mMy05fcF4-c4dIjU4eiLQxIotOE'
-BOT_PREFIX = '!'
-
-#TOKEN = os.environ['TOKEN']
-#BOT_PREFIX = os.environ['PREFIX']
+TOKEN = os.environ['TOKEN']
+BOT_PREFIX = os.environ['PREFIX']
 
 client = disc.Bot(BOT_PREFIX)
 game_started = False
