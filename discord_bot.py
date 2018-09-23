@@ -77,11 +77,20 @@ async def on_server_join():
 async def start_game(context):
     global data
     server = context.message.server.id
-    if (data[server][game_started] in globals() or data[server][game_started] in locals()) and data[server][game_started]:
+    if data.has_key(server) and data[server][game_started]:
         await client.say("Une partie est déjà en cours. Entrez la commande join pour la rejoindre.")
     else:
+        data[server] = dict([])
         data[server][game_started] = True
+        data[server][fail] = False
+        data[server][failures] = 0
+        data[server][successes] = 0
+        data[server][quest] = 1
+        data[server][questers] = []
+        data[server][vote] = 1
+        data[server][leader] = 0
         data[server][players] = []
+        data[server][voters] = []
         await client.say("Une partie d'Avalon a été lancée ! Entrez la commande join pour participer !")
         await client.say("POUR L'INSTANT, la plupart des commandes peuvent être entrées en message privé. Je ferai une MàJ quand j'aurai le temps pour pouvoir porter AvalonBot sur d'autres serveurs, et certaines fonctionnalités seront supprimées.")
     
