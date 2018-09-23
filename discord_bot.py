@@ -34,6 +34,7 @@ tours = [[]]*11
 # 5 : Oberon
 # 6 : Morgane
 # 7 : Sbire
+roles[3] = [1,2,4]
 roles[5] = [1,2,3,4,7]
 roles[6] = [1,2,3,3,4,6]
 roles[7] = [1,2,3,3,4,5,7]
@@ -41,6 +42,7 @@ roles[8] = [1,2,3,3,3,4,5,6]
 roles[9] = [1,2,3,3,3,3,4,6,7]
 roles[10] = [1,2,3,3,3,3,4,5,6,7]
 
+tours[3] = [1,2,3,2,3]
 tours[5] = [2,3,2,3,3]
 tours[6] = [2,3,4,3,4]
 tours[7] = [2,3,3,4,4]
@@ -145,7 +147,7 @@ async def pret(context):
         return True if msg.author.id in [i.id for i in data[server][voters]] and (msg.content == 'Succès' or msg.content == 'Echec') else False
     if not game_started:
         await client.say("Il n'y a pas de partie en cours. Lancez-en une avec la commande start !")
-    elif len(data[server][players]) < 5:
+    elif len(data[server][players]) < 5 and en(data[server][players]) != 3:
         await client.say("Pas assez de joueurs !")
     else:
         await client.say("La partie va commencer. Je commence à distribuer les rôles.")
