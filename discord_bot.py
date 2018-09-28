@@ -179,7 +179,7 @@ async def pret(context):
             await client.say("Procédons à la quête numéro "+str(data[server]['quest'])+", vote numéro "+str(data[server]['vote']))
             if data[server]['vote'] == 5:
                 await client.say("Attention ! Cette équipe de quête sera automatiquement acceptée.")
-            await client.say("C'est à "+data[server]['players'][data[server]['leader']].mention+" de choisir l'équipe. Elle devra être constituée de "+str(tours[len(data[server][players])][data[server][quest]-1])+" joueurs.")
+            await client.say("C'est à "+data[server]['players'][data[server]['leader']].mention+" de choisir l'équipe. Elle devra être constituée de "+str(tours[len(data[server]['players'])][data[server]['quest']-1])+" joueurs.")
             data[server]['questers'] = []
             while len(data[server]['questers'])<tours[len(data[server]['players'])][data[server]['quest']-1] and data[server]['vote'] < 5:
                 msg = await client.wait_for_message(author = data[server]['players'][data[server]['leader']], check = check)
