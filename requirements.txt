@@ -1,4 +1,4 @@
 async-timeout==3.0.0
 decorator==4.0.10
 discord.py==0.16.12
-
+unidecode
