@@ -1,0 +1,6 @@
+By order of importance :
+
+- Add a few aliases (french+english)
+- Catch the exceptions when sending mp in the server-linked phase, in order to warn the user that his demand has not been taken into account
+- Work on the messages sent by Avbot to make them more intuitive (especially the list of players in the team -> compile them into a single message, on mobile the display is urgh)
+- Create an expert mode (shorter messages)
