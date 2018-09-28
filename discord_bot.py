@@ -213,7 +213,10 @@ async def pret(context):
                     if msg.content.lower().strip() == "echec":
                         data[server]['fail'] +=1
                 if data[server]['fail']:
-                    await client.say("La quête est un échec, car {} joueur(s) ont voté contre.".format(data[server]['fail']))
+                    if data[server]['fail'] > 1:
+                        await client.say("La quête est un échec, car {} joueurs ont trahi l'équipe".format(data[server]['fail']))
+                    else:
+                        await client.say("La quête est un échec, car 1 joueur a trahi l'équipe")      
                     data[server]['failures'] +=1
                     data[server]['leader'] = (data[server]['leader'] + 1)%len(data[server]['players'])
                     data[server]['quest'] +=1
