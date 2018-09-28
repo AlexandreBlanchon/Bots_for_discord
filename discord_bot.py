@@ -8,7 +8,7 @@ Created on Fri Sep 21 16:32:15 2018
 import discord.ext.commands as disc
 import random
 import os
-import unicodedata
+import unidecode
 
 TOKEN = os.environ['TOKEN']
 BOT_PREFIX = os.environ['PREFIX']
@@ -145,7 +145,7 @@ async def pret(context):
     def check2(msg):
         return True if msg.author.id in [i.id for i in data[server]['voters']] and (msg.content.lower().strip() == 'pour' or msg.content.lower().strip() == 'contre') else False
     def check3(msg):
-        return True if msg.author.id in [i.id for i in data[server]['voters']] and (unicodedata.normalize(NFD,msg.content.lower().strip()).encode('ascii', 'ignore') == 'succes' or msg.content.lower().strip() == 'echec') else False
+        return True if msg.author.id in [i.id for i in data[server]['voters']] and (unidecode.unidecode(msg.content.lower().strip()) == 'succes' or msg.content.lower().strip() == 'echec') else False
     if not data[server]['game_started']:
         await client.say("Il n'y a pas de partie en cours. Lancez-en une avec la commande start !")
     elif roles[len(data[server]['players'])] == []:
