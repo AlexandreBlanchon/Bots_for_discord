@@ -119,21 +119,21 @@ async def players_list(context):
     for i in data[server]['players']:
         await client.say(i.mention)
 
-@client.command(pass_context = True, brief = "Un test de fonctionnalités (détection des id_users)")
-async def test(context):
-    def check(msg):
-        return True
-    await client.say("Ceci est un test. "+context.message.author.mention+", désigne un joueur")
-    msg = await client.wait_for_message(author = context.message.author,check = check)
-    user_id = msg.content
-    await client.say("Tu as parlé de {} ?".format(user_id))
-    user = await client.get_user_info(user_id[2:-1])
-    await client.send_message(destination = user, content = context.message.author.mention+" mentionned you !")
+#@client.command(pass_context = True, brief = "Un test de fonctionnalités (détection des id_users)")
+#async def test(context):
+#    def check(msg):
+#        return True
+#    await client.say("Ceci est un test. "+context.message.author.mention+", désigne un joueur")
+#    msg = await client.wait_for_message(author = context.message.author,check = check)
+#    user_id = msg.content
+#    await client.say("Tu as parlé de {} ?".format(user_id))
+#    user = await client.get_user_info(user_id[2:-1])
+#    await client.send_message(destination = user, content = context.message.author.mention+" mentionned you !")
     
-@client.command(pass_context = True, brief = "Un test de fonctionnalités (mention du server)")
-async def server_mention(context):
-    await client.reply("Nous sommes sur le serveur "+context.message.server.name)
-    await client.reply("Nous sommes sur le serveur "+str(context.message.server.id))
+#@client.command(pass_context = True, brief = "Un test de fonctionnalités (mention du server)")
+#async def server_mention(context):
+#    await client.reply("Nous sommes sur le serveur "+context.message.server.name)
+#    await client.reply("Nous sommes sur le serveur "+str(context.message.server.id))
 
 @client.command(pass_context = True, brief = "Une fois que tous les joueurs sont là")
 async def pret(context):
@@ -243,12 +243,7 @@ async def pret(context):
             if (1, user) in data[server]['game_data']:
                 await client.say ("L'assassin a tué Merlin. C'est finalement le Mal qui a vaincu !")
             else:
-                await client.say("L'assassin n'a pas réussi à tuer Merlin. Le Bien triomphe !")
-     
-@client.command(pass_context = True, brief = "Un test de fonctionnalités (demande de mp)")
-async def mp(context):
-    await client.wait_for_message(author = context.message.author)
-    await client.whisper("J'ai bien reçu ton message")               
+                await client.say("L'assassin n'a pas réussi à tuer Merlin. Le Bien triomphe !")           
      
         
 client.run(TOKEN)
