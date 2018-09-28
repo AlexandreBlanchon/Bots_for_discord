@@ -200,7 +200,7 @@ async def pret(context):
                 msg = await client.wait_for_message(check = check2)
                 data[server]['voters'].remove(msg.author)
                 await client.say(msg.author.mention+" a voté "+msg.content)
-                if msg.content == "Pour":
+                if msg.content.lower().strip() == "pour":
                     votes_pour += 1
             if votes_pour > len(data[server]['players'])//2 or data[server]['vote'] == 5:
                 await client.say("L'équipe est acceptée ! Il faut maintenant que les membres de l'équipe m'envoient leur vote (Succès ou Echec) par message privé.")
@@ -210,7 +210,7 @@ async def pret(context):
                     msg = await client.wait_for_message(check = check3)
                     data[server]['voters'].remove(msg.author)
                     await client.say(msg.author.mention + " a voté.")
-                    if msg.content == "Echec":
+                    if msg.content.lower().strip() == "echec":
                         data[server]['fail'] = True
                 if data[server]['fail']:
                     await client.say("La quête est un échec.")
