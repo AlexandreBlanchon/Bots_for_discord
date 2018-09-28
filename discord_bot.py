@@ -95,8 +95,7 @@ async def start_game(context):
         data[server]['players'] = []
         data[server]['voters'] = []
         await client.say("Une partie d'Avalon a été lancée ! Entrez la commande join pour participer !")
-        await client.say("POUR L'INSTANT, la plupart des commandes peuvent être entrées en message privé. Je ferai une MàJ quand j'aurai le temps pour pouvoir porter AvalonBot sur d'autres serveurs, et certaines fonctionnalités seront supprimées.")
-    
+        
 @client.command(pass_context = True, brief = "Rejoignez une partie")
 async def join(context):
     global data
