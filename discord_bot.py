@@ -60,7 +60,7 @@ async def end_game(context):
     server = context.message.server.id
     data[server] = dict([])
     data[server]['game_started'] = False
-    data[server]['fail'] = False
+    data[server]['fail'] = 0
     data[server]['failures'] = 0
     data[server]['successes'] = 0
     data[server]['quest'] = 1
@@ -85,7 +85,7 @@ async def start_game(context):
     else:
         data[server] = dict([])
         data[server]['game_started'] = True
-        data[server]['fail'] = False
+        data[server]['fail'] = 0
         data[server]['failures'] = 0
         data[server]['successes'] = 0
         data[server]['quest'] = 1
@@ -205,15 +205,15 @@ async def pret(context):
             if votes_pour > len(data[server]['players'])//2 or data[server]['vote'] == 5:
                 await client.say("L'équipe est acceptée ! Il faut maintenant que les membres de l'équipe m'envoient leur vote (Succès ou Echec) par message privé.")
                 data[server]['voters'] = data[server]['questers'].copy()
-                data[server]['fail'] = False
+                data[server]['fail'] = 0
                 while data[server]['voters'] != []:
                     msg = await client.wait_for_message(check = check3)
                     data[server]['voters'].remove(msg.author)
                     await client.say(msg.author.mention + " a voté.")
                     if msg.content.lower().strip() == "echec":
-                        data[server]['fail'] = True
+                        data[server]['fail'] +=1
                 if data[server]['fail']:
-                    await client.say("La quête est un échec.")
+                    await client.say("La quête est un échec, car {} joueur(s) ont voté contre.".format(data[server]['fail']))
                     data[server]['failures'] +=1
                     data[server]['leader'] = (data[server]['leader'] + 1)%len(data[server]['players'])
                     data[server]['quest'] +=1
