@@ -147,7 +147,7 @@ async def pret(context):
         return True if msg.author.id in [i.id for i in data[server]['voters']] and (msg.content.lower().strip() == 'pour' or msg.content.lower().strip() == 'contre') else False
     def check3(msg):
         return True if msg.author.id in [i.id for i in data[server]['voters']] and (unicodedata.normalize(NFD,msg.content.lower().strip()).encode('ascii', 'ignore') == 'succes' or msg.content.lower().strip() == 'echec') else False
-    if not game_started:
+    if not data[server][game_started]:
         await client.say("Il n'y a pas de partie en cours. Lancez-en une avec la commande start !")
     elif roles[len(data[server]['players'])] == []:
         await client.say("Pas assez de joueurs !")
