@@ -182,7 +182,7 @@ async def pret(context):
                 await client.say("Attention ! Cette équipe de quête sera automatiquement acceptée.")
             await client.say("C'est à "+data[server]['players'][data[server]['leader']].mention+" de choisir l'équipe. Elle devra être constituée de "+str(tours[len(data[server]['players'])][data[server]['quest']-1])+" joueurs.")
             data[server]['questers'] = []
-            while len(data[server]['questers'])<tours[len(data[server]['players'])][data[server]['quest']-1] and data[server]['vote'] < 5:
+            while len(data[server]['questers'])<tours[len(data[server]['players'])][data[server]['quest']-1]:
                 msg = await client.wait_for_message(author = data[server]['players'][data[server]['leader']], check = check)
                 user_id = msg.content
                 await client.say(content = user_id+" a été ajouté à l'équipe de quête.")
@@ -194,7 +194,8 @@ async def pret(context):
             await client.say("L'équipe de quête a été constituée. Les personnes suivantes en font partie :")
             for i in data[server]['questers']:
                 await client.say(i.mention)
-            await client.say("Votez Pour ou Contre l'équipe de quête !")
+            if data[server]['vote'] < 5:
+                await client.say("Votez Pour ou Contre l'équipe de quête !")
             data[server]['voters'] = data[server]['players'].copy()
             votes_pour = 0
             l = len(data[server]['players'])
@@ -238,7 +239,7 @@ async def pret(context):
             await client.say("Les agents du Mal, c'est à dire ")
             for j in data[server]['game_data']:
                     if j[0]>3:
-                        await client.say(j[0].mention)
+                        await client.say(j[1].mention)
             await client.say("ont vaincu.")
         if data[server]['successes']==3:
             await client.say("Les loyaux serviteurs d'Arthur ont accompli leurs trois quêtes. L'assassin, c'est à dire : ")
