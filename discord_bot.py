@@ -9,6 +9,7 @@ import discord.ext.commands as disc
 import random
 import os
 import unidecode
+import time
 
 TOKEN = os.environ['TOKEN']
 BOT_PREFIX = os.environ['PREFIX']
@@ -196,14 +197,18 @@ async def pret(context):
             await client.say("Votez Pour ou Contre l'équipe de quête !")
             data[server]['voters'] = data[server]['players'].copy()
             votes_pour = 0
-            while data[server]['voters'] != [] and votes_pour <= len(data[server]['players'])//2 and data[server]['vote'] < 5:
+            l = len(data[server]['players'])
+            while l - votes_pour - len(data[server]['voters']) < l//2 and votes_pour <= l//2 and data[server]['vote'] < 5:
                 msg = await client.wait_for_message(check = check2)
                 data[server]['voters'].remove(msg.author)
-                await client.say(msg.author.mention+" a voté "+msg.content)
                 if msg.content.lower().strip() == "pour":
+                    await client.say(msg.author.mention+" a voté Pour")
                     votes_pour += 1
+                else:
+                    await client.say(msg.author.mention+" a voté contre")
             if votes_pour > len(data[server]['players'])//2 or data[server]['vote'] == 5:
                 await client.say("L'équipe est acceptée ! Il faut maintenant que les membres de l'équipe m'envoient leur vote (Succès ou Echec) par message privé.")
+                data[server]['vote'] = 1
                 data[server]['voters'] = data[server]['questers'].copy()
                 data[server]['fail'] = 0
                 while data[server]['voters'] != []:
@@ -227,6 +232,7 @@ async def pret(context):
                     data[server]['quest'] +=1
             else:
                 await client.say("L'équipe est refusée")
+                data[server]['vote'] += 1
                 data[server]['leader'] = (data[server]['leader'] + 1)%len(data[server]['players'])
         if data[server]['failures']==3:
             await client.say("Les agents du Mal, c'est à dire ")
