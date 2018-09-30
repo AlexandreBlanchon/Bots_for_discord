@@ -55,7 +55,7 @@ async def on_ready():
 async def hello():
     await client.say("Hello !")
         
-@client.command(pass_context = True, brief = "Termine la partie", description = "Permet de quitter une partie à tout moment. A utiliser quand une partie se termine.", aliases = ['end'])
+@client.command(pass_context = True, brief = "Termine la partie", description = "Permet de quitter une partie à tout moment. A utiliser quand une partie se termine.", aliases = ['end', 'End', 'End_game', 'End_Game'])
 async def end_game(context):
     global data
     server = context.message.server.id
@@ -97,7 +97,7 @@ async def start_game(context):
         data[server]['voters'] = []
         await client.say("Une partie d'Avalon a été lancée ! Entrez la commande join pour participer !")
         
-@client.command(pass_context = True, brief = "Rejoignez une partie")
+@client.command(pass_context = True, brief = "Rejoignez une partie", aliases = ['Join'])
 async def join(context):
     global data
     server = context.message.server.id
@@ -118,8 +118,10 @@ async def players_list(context):
     global data
     server = context.message.server.id
     await client.say("Voici la liste des joueurs")
+    disp = ""
     for i in data[server]['players']:
-        await client.say(i.mention)
+        disp += (i.mention + "\n")
+    await client.say(disp)
 
 #@client.command(pass_context = True, brief = "Un test de fonctionnalités (détection des id_users)")
 #async def test(context):
