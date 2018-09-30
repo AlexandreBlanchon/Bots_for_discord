@@ -202,8 +202,6 @@ async def pret(context):
             for i in data[server]['questers']:
                 disp += i.mention + "\n"
             await client.say(disp)
-            
-
             if data[server]['vote'] < 5:
                 await client.say("Vous avez une minute pour voter Pour ou Contre l'équipe de quête !")
                 data[server]['voters'] = data[server]['players'].copy()
@@ -221,11 +219,6 @@ async def pret(context):
                         disp += i.author.mention+" a voté Contre.\n"
                         votes_contre += 1
                 await client.say(disp)
-
-
-
-
-
             if votes_pour > votes_contre or data[server]['vote'] == 5:
                 await client.say("L'équipe est acceptée ! Il faut maintenant que les membres de l'équipe m'envoient leur vote (Succès ou Echec) par message privé.")
                 data[server]['vote'] = 1
