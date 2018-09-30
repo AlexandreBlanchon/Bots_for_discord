@@ -9,17 +9,20 @@ import discord.ext.commands as disc
 import random
 import os
 import unidecode
-import time
+import asyncio
 
-TOKEN = os.environ['TOKEN']
-BOT_PREFIX = os.environ['PREFIX']
+TOKEN = 'NDkyNzAyMDY5NzE1ODk0Mjkz.DokNcw.uBCUgpdfoWiuvhQ-XqWboMVE_74'
+BOT_PREFIX = '!'
+
+#TOKEN = os.environ['TOKEN']
+#BOT_PREFIX = os.environ['PREFIX']
 client = disc.Bot(BOT_PREFIX)
 
 data = dict(dict([]))
 
 traduction = ['', 'Merlin', 'Perceval', 'Chevalier', 'Assassin', 'Oberon', 'Morgane', 'un sbire de Mordred']
 roles = [[]]*11
-tours = [[]]*11 
+tours = [[]]*11
 # 1 : Merlin
 # 2 : Perceval
 # 3 : Chevalier
@@ -54,7 +57,7 @@ async def on_ready():
 @client.command(brief = "I'm polite !", description = "I reply whenever you greet me !", aliases = ['Hello', 'Hi', 'hi'])
 async def hello():
     await client.say("Hello !")
-        
+
 @client.command(pass_context = True, brief = "Termine la partie", description = "Permet de quitter une partie à tout moment. A utiliser quand une partie se termine.", aliases = ['end', 'End', 'End_game', 'End_Game'])
 async def end_game(context):
     global data
@@ -75,9 +78,9 @@ async def end_game(context):
 
 
 @client.event
-async def on_server_join():    
+async def on_server_join():
     await client.say("Hello everyone ! I'm AvalonBot and it's so nice to meet you !")
-    
+
 @client.command(aliases = ['startgame', 'start-game', 'start'], brief = "C'est là que tout commence !", pass_context = True)
 async def start_game(context):
     global data
@@ -98,7 +101,7 @@ async def start_game(context):
         data[server]['voters'] = []
         data[server]['history'] = [[]]
         await client.say("Une partie d'Avalon a été lancée ! Entrez la commande join pour participer !")
-        
+
 @client.command(pass_context = True, brief = "Rejoignez une partie", aliases = ['Join'])
 async def join(context):
     global data
@@ -109,7 +112,7 @@ async def join(context):
                 data[server]['players'] += [context.message.author]
                 await client.reply("c'est noté. Tu as rejoint la partie !")
             else:
-               await client.reply("je suis désolé, mais je ne peux pas t'ajouter à la partie. Le nombre de joueurs maximum est atteint.") 
+               await client.reply("je suis désolé, mais je ne peux pas t'ajouter à la partie. Le nombre de joueurs maximum est atteint.")
         else:
             await client.reply("tu es déjà dans la partie.")
     else:
@@ -135,7 +138,7 @@ async def players_list(context):
 #    await client.say("Tu as parlé de {} ?".format(user_id))
 #    user = await client.get_user_info(user_id[2:-1])
 #    await client.send_message(destination = user, content = context.message.author.mention+" mentionned you !")
-    
+
 #@client.command(pass_context = True, brief = "Un test de fonctionnalités (mention du server)")
 #async def server_mention(context):
 #    await client.reply("Nous sommes sur le serveur "+context.message.server.name)
@@ -195,23 +198,35 @@ async def pret(context):
                     data[server]['questers'] += [await client.get_user_info(user_id[2:-1])]
                 else:
                     await client.say("Cette personne a déjà été ajoutée à l'équipe de quête.")
-            await client.say("L'équipe de quête a été constituée. Les personnes suivantes en font partie :")
+            disp = "L'équipe de quête a été constituée. Les personnes suivantes en font partie : \n"
             for i in data[server]['questers']:
-                await client.say(i.mention)
+                disp += i.mention + "\n"
+            await client.say(disp)
+            
+
             if data[server]['vote'] < 5:
-                await client.say("Votez Pour ou Contre l'équipe de quête !")
-            data[server]['voters'] = data[server]['players'].copy()
-            votes_pour = 0
-            l = len(data[server]['players'])
-            while l - votes_pour - len(data[server]['voters']) < l//2 and votes_pour <= l//2 and data[server]['vote'] < 5:
-                msg = await client.wait_for_message(check = check2)
-                data[server]['voters'].remove(msg.author)
-                if msg.content.lower().strip() == "pour":
-                    await client.say(msg.author.mention+" a voté Pour")
-                    votes_pour += 1
-                else:
-                    await client.say(msg.author.mention+" a voté contre")
-            if votes_pour > len(data[server]['players'])//2 or data[server]['vote'] == 5:
+                await client.say("Vous avez une minute pour voter Pour ou Contre l'équipe de quête !")
+                data[server]['voters'] = data[server]['players'].copy()
+                votes_pour = 0
+                votes_contre = 0
+                disp = "Le vote est terminé"
+                msgs = []
+                msgs = await asyncio.gather(*[client.wait_for_message(check = check2, author = i, timeout = 60) for i in data[server]['voters']], return_exceptions = True)
+                print(msgs)
+                for i in msgs:
+                    if i != None and i.content.lower().strip() == "pour":
+                        disp += i.author.mention+" a voté Pour.\n"
+                        votes_pour += 1
+                    elif i != None:
+                        disp += i.author.mention+" a voté Contre.\n"
+                        votes_contre += 1
+                await client.say(disp)
+
+
+
+
+
+            if votes_pour > votes_contre or data[server]['vote'] == 5:
                 await client.say("L'équipe est acceptée ! Il faut maintenant que les membres de l'équipe m'envoient leur vote (Succès ou Echec) par message privé.")
                 data[server]['vote'] = 1
                 data[server]['voters'] = data[server]['questers'].copy()
@@ -226,7 +241,7 @@ async def pret(context):
                     if data[server]['fail'] > 1:
                         await client.say("La quête est un échec, car {} joueurs ont trahi l'équipe.".format(data[server]['fail']))
                     else:
-                        await client.say("La quête est un échec, car 1 joueur a trahi l'équipe.")      
+                        await client.say("La quête est un échec, car 1 joueur a trahi l'équipe.")
                     data[server]['failures'] +=1
                     data[server]['leader'] = (data[server]['leader'] + 1)%len(data[server]['players'])
                     data[server]['quest'] +=1
@@ -259,14 +274,7 @@ async def pret(context):
             if (1, user) in data[server]['game_data']:
                 await client.say ("L'assassin a tué Merlin. C'est finalement le Mal qui a vaincu !")
             else:
-                await client.say("L'assassin n'a pas réussi à tuer Merlin. Le Bien triomphe !")           
-     
-        
+                await client.say("L'assassin n'a pas réussi à tuer Merlin. Le Bien triomphe !")
+
+
 client.run(TOKEN)
-
-
-
-
-
-
-
