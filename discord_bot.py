@@ -70,6 +70,7 @@ async def end_game(context):
     data[server]['leader'] = 0
     data[server]['players'] = []
     data[server]['voters'] = []
+    data[server]['history'] = [[]]
     await client.say("La partie a bien été réinitialisée. Entrez la commande start pour commencer le choix des joueurs !")
 
 
@@ -95,6 +96,7 @@ async def start_game(context):
         data[server]['leader'] = 0
         data[server]['players'] = []
         data[server]['voters'] = []
+        data[server]['history'] = [[]]
         await client.say("Une partie d'Avalon a été lancée ! Entrez la commande join pour participer !")
         
 @client.command(pass_context = True, brief = "Rejoignez une partie", aliases = ['Join'])
@@ -222,9 +224,9 @@ async def pret(context):
                         data[server]['fail'] +=1
                 if data[server]['fail']:
                     if data[server]['fail'] > 1:
-                        await client.say("La quête est un échec, car {} joueurs ont trahi l'équipe".format(data[server]['fail']))
+                        await client.say("La quête est un échec, car {} joueurs ont trahi l'équipe.".format(data[server]['fail']))
                     else:
-                        await client.say("La quête est un échec, car 1 joueur a trahi l'équipe")      
+                        await client.say("La quête est un échec, car 1 joueur a trahi l'équipe.")      
                     data[server]['failures'] +=1
                     data[server]['leader'] = (data[server]['leader'] + 1)%len(data[server]['players'])
                     data[server]['quest'] +=1
@@ -234,15 +236,16 @@ async def pret(context):
                     data[server]['leader'] = (data[server]['leader'] + 1)%len(data[server]['players'])
                     data[server]['quest'] +=1
             else:
-                await client.say("L'équipe est refusée")
+                await client.say("L'équipe est refusée.")
                 data[server]['vote'] += 1
                 data[server]['leader'] = (data[server]['leader'] + 1)%len(data[server]['players'])
         if data[server]['failures']==3:
-            await client.say("Les agents du Mal, c'est à dire ")
+            disp = "Les agents du Mal, c'est à dire \n"
             for j in data[server]['game_data']:
                     if j[0]>3:
-                        await client.say(j[1].mention)
-            await client.say("ont vaincu.")
+                        disp += (j[1].mention + "\n")
+            disp += "ont vaincu."
+            await client.say(disp)
         if data[server]['successes']==3:
             await client.say("Les loyaux serviteurs d'Arthur ont accompli leurs trois quêtes. L'assassin, c'est à dire : ")
             for j in data[server]['game_data']:
