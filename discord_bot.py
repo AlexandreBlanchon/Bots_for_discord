@@ -1,3 +1,4 @@
+#!/usr/bin python3.5
 # -*- coding: utf-8 -*-
 """
 Created on Fri Sep 21 16:32:15 2018
@@ -5,14 +6,13 @@ Created on Fri Sep 21 16:32:15 2018
 @author: Alexandre
 """
 
+from settings import TOKEN, BOT_PREFIX
 import discord.ext.commands as disc
 import random
 import os
 import unidecode
 import asyncio
 
-TOKEN = os.environ['TOKEN']
-BOT_PREFIX = os.environ['PREFIX']
 client = disc.Bot(BOT_PREFIX)
 
 data = dict(dict([]))
@@ -204,7 +204,7 @@ async def pret(context):
                 data[server]['voters'] = data[server]['players'].copy()
                 votes_pour = 0
                 votes_contre = 0
-                disp = "Le vote est terminé"
+                disp = "Le vote est terminé.\n"
                 msgs = []
                 msgs = await asyncio.gather(*[client.wait_for_message(check = check2, author = i, timeout = 60) for i in data[server]['voters']], return_exceptions = True)
                 print(msgs)
