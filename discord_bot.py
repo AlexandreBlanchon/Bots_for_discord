@@ -66,7 +66,7 @@ async def end_game(context):
     data[server]['successes'] = 0
     data[server]['quest'] = 1
     data[server]['questers'] = []
-    data[server]['vote'] = 1git config --global user.email "your_email_address@example.com"
+    data[server]['vote'] = 1
     data[server]['leader'] = 0
     data[server]['players'] = []
     data[server]['voters'] = []
