@@ -202,7 +202,7 @@ async def pret(context):
             if data[server]['vote'] < 5:
                 await client.say("Vous avez une minute pour voter Pour ou Contre l'équipe de quête !")
                 for i in data[server]['game_data']:
-                    await client.send_message(destination=i[1], "Votez ici ! Votre vote sera rendu public à la fin de la minute, ou une fois que tout le monde aura voté, mais pas avant.")
+                    await client.send_message(destination=i[1],content="Votez ici ! Votre vote sera rendu public à la fin de la minute, ou une fois que tout le monde aura voté, mais pas avant.")
                 data[server]['voters'] = data[server]['players'].copy()
                 votes_pour = 0
                 votes_contre = 0
@@ -224,7 +224,7 @@ async def pret(context):
                 data[server]['voters'] = data[server]['questers'].copy()
                 data[server]['fail'] = 0
                 for i in data[server]['game_data']:
-                    await client.send_message(destination=i[1], "Votez ici ! Votre vote sera secret et le restera pour toute la durée de la partie.")
+                    await client.send_message(destination=i[1], content="Votez ici ! Votre vote sera secret et le restera pour toute la durée de la partie.")
                 while data[server]['voters'] != []:
                     msg = await client.wait_for_message(check = check3)
                     data[server]['voters'].remove(msg.author)
