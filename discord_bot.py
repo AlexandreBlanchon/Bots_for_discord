@@ -51,7 +51,7 @@ async def on_ready():
     print(client.user.id)
     print("-------------------------")
 
-@client.command(brief = "I'm polite !", description = "I reply whenever you greet me !", aliases = ['Hello', 'Hi', 'hi'])
+@client.command(brief = "Je suis poli ! (commande de ping)", description = "I reply whenever you greet me !", aliases = ['Hello', 'Hi', 'hi'])
 async def hello():
     await client.say("Hello !")
 
@@ -62,11 +62,11 @@ async def end_game(context):
     data[server] = dict([])
     data[server]['game_started'] = False
     data[server]['fail'] = 0
-    data[server]['failures'] = 0
+    data[server]['failures'] = 0leader
     data[server]['successes'] = 0
     data[server]['quest'] = 1
     data[server]['questers'] = []
-    data[server]['vote'] = 1
+    data[server]['vote'] = 1git config --global user.email "your_email_address@example.com"
     data[server]['leader'] = 0
     data[server]['players'] = []
     data[server]['voters'] = []
@@ -184,7 +184,7 @@ async def pret(context):
             await client.say("Procédons à la quête numéro "+str(data[server]['quest'])+", vote numéro "+str(data[server]['vote']))
             if data[server]['vote'] == 5:
                 await client.say("Attention ! Cette équipe de quête sera automatiquement acceptée.")
-            await client.say("C'est à "+data[server]['players'][data[server]['leader']].mention+" de choisir l'équipe. Elle devra être constituée de "+str(tours[len(data[server]['players'])][data[server]['quest']-1])+" joueurs.")
+            await client.say("C'est à "+data[server]['players'][data[server]['leader']].mention+" de choisir l'équipe. Pour cela, envoie sur ce serveur les @ des équipiers. Elle devra être constituée de "+str(tours[len(data[server]['players'])][data[server]['quest']-1])+" joueurs.")
             data[server]['questers'] = []
             while len(data[server]['questers'])<tours[len(data[server]['players'])][data[server]['quest']-1]:
                 msg = await client.wait_for_message(author = data[server]['players'][data[server]['leader']], check = check)
@@ -201,6 +201,8 @@ async def pret(context):
             await client.say(disp)
             if data[server]['vote'] < 5:
                 await client.say("Vous avez une minute pour voter Pour ou Contre l'équipe de quête !")
+                for i in data[server]['game_data']:
+                    await client.send_message(destination=i[1], "Votez ici ! Votre vote sera rendu public à la fin de la minute, ou une fois que tout le monde aura voté, mais pas avant.")
                 data[server]['voters'] = data[server]['players'].copy()
                 votes_pour = 0
                 votes_contre = 0
@@ -221,6 +223,8 @@ async def pret(context):
                 data[server]['vote'] = 1
                 data[server]['voters'] = data[server]['questers'].copy()
                 data[server]['fail'] = 0
+                for i in data[server]['game_data']:
+                    await client.send_message(destination=i[1], "Votez ici ! Votre vote sera secret et le restera pour toute la durée de la partie.")
                 while data[server]['voters'] != []:
                     msg = await client.wait_for_message(check = check3)
                     data[server]['voters'].remove(msg.author)
