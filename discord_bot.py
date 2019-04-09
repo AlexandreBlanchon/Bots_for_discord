@@ -62,7 +62,7 @@ async def end_game(context):
     data[server] = dict([])
     data[server]['game_started'] = False
     data[server]['fail'] = 0
-    data[server]['failures'] = 0leader
+    data[server]['failures'] = 0
     data[server]['successes'] = 0
     data[server]['quest'] = 1
     data[server]['questers'] = []
